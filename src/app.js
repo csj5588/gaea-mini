@@ -4,7 +4,11 @@ import './app.less'
 
 class App extends Component {
 
-  componentDidMount () {}
+  componentDidMount () {
+    wx.cloud.init({
+      env: 'gaea-p401w'
+    })
+  }
 
   componentDidShow () {}
 

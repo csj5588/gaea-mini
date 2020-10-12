@@ -15,9 +15,10 @@ export default class Index extends Component {
   }
 
   handleClick = (value) => {
-    this.setState({
-      current: value
-    })
+    console.log(value)
+    // this.setState({
+    //   current: value
+    // })
   }
 
   render () {
