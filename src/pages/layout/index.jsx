@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
+import Taro from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import Home from '@/pages/home';
+import Category from '@/pages/category';
 import { AtButton, AtTabBar } from 'taro-ui'
 
 import "taro-ui/dist/style/components/button.scss" // 按需引入
@@ -10,14 +12,22 @@ export default class Index extends Component {
   constructor () {
     super(...arguments)
     this.state = {
-      current: 0
+      current: 1
     }
   }
 
+  pageMuster = [
+    <Home />,
+    <Category />,
+  ]
+
   handleClick = (value) => {
-    console.log(value)
-    // this.setState({
-    //   current: value
+    this.setState({
+      current: value
+    })
+    // wx.redirectTo({ url: '/pages/category/index' });
+    // Taro.navigateTo({
+    //   url: '/pages/category/index'
     // })
   }
 
@@ -25,12 +35,12 @@ export default class Index extends Component {
     const { current } = this.state;
     return (
       <View className='index'>
-        <Home />
+        {this.pageMuster[current]}
         <AtTabBar
           fixed
           tabList={[
             { title: '首页', iconType: 'home' },
-            { title: 'Tab2', iconType: 'mail' },
+            { title: '分类', iconType: 'mail' },
             { title: 'Tab2', iconType: 'list' }
           ]}
           onClick={this.handleClick}
