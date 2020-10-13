@@ -18,7 +18,7 @@ export default class Index extends Component {
 
   pageMuster = [
     <Home />,
-    <Category />,
+    <Category />
   ]
 
   handleClick = (value) => {
@@ -40,8 +40,8 @@ export default class Index extends Component {
           fixed
           tabList={[
             { title: '首页', iconType: 'home' },
-            { title: '分类', iconType: 'mail' },
-            { title: 'Tab2', iconType: 'list' }
+            { title: '类目', iconType: 'mail' },
+            { title: '我的', iconType: 'user' }
           ]}
           onClick={this.handleClick}
           current={current}
