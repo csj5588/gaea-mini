@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
-import CardLine from '@/components/cardLine';
 import MenuCard from '@/components/menuCard';
 
 import "taro-ui/dist/style/components/button.scss" // 按需引入
@@ -28,9 +27,9 @@ export default class Category extends Component {
     });
   }
 
-  routeTo = () => {
+  routeTo = (categoryId) => {
     Taro.navigateTo({
-      url: '/pages/columns/index'
+      url: `/pages/columns/index?categoryId=${categoryId}`
     })
   }
 
@@ -41,7 +40,7 @@ export default class Category extends Component {
         {
           data.map(item => {
             return (
-              <View className='card' onClick={this.routeTo}>
+              <View className='card' onClick={() => this.routeTo(item.id)}>
                 <MenuCard
                   title={item.title}
                 />
@@ -49,8 +48,6 @@ export default class Category extends Component {
             )
           })
         }
-        <CardLine />
-        <CardLine />
       </View>
     )
   }
