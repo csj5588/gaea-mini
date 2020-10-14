@@ -47,7 +47,7 @@ export default class Index extends Component {
           Object.keys(fields).map(key => {
             return [
               <Pole title={fields[key]} more onClickMore={() => this.toColumns(key)} />,
-              <ArtList sourceData={data[key] || []} />
+              <ArtList sourceData={data[key] || []} sourceType={key} />
             ]
           })
         }

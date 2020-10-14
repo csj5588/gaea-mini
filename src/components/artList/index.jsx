@@ -1,11 +1,15 @@
 import React, { Component } from 'react'
+import Taro from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 import { AtList, AtListItem } from 'taro-ui';
 import './index.less'
 
 export default class ArtList extends Component {
-  handleClick = (id) => {
-    console.log(id);
+  handleClick = (articleId) => {
+    const { sourceType: categoryId } = this.props;
+    Taro.navigateTo({
+      url: `/pages/article/index?articleId=${articleId}&categoryId=${categoryId}`
+    })
   }
   
   render () {
