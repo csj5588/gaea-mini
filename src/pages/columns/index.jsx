@@ -2,7 +2,9 @@ import React, { Component } from 'react'
 import { View, Text } from '@tarojs/components'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { AtSearchBar } from 'taro-ui'
+import _ from 'lodash';
 import CardLine from '@/components/cardLine';
+import NoData from '@/components/noData';
 
 import "taro-ui/dist/style/components/button.scss" // 按需引入
 import './index.less'
@@ -12,6 +14,7 @@ export default class Columns extends Component {
     categoryId: '',
     data: [],
     value: '', // search
+    onLoad: true,
   }
 
   componentWillMount () {
@@ -35,6 +38,7 @@ export default class Columns extends Component {
         this.setState({
           data: _list,
           all: _list,
+          onLoad: false,
         });
       }
     });
@@ -57,26 +61,32 @@ export default class Columns extends Component {
   }
 
   render () {
-    const { data, value } = this.state;
+    const { data, value, onLoad } = this.state;
     return (
       <View className="columns-root">
         <AtSearchBar
           value={value}
           onChange={this.onChange}
         />
-        <View className='columns-list'>
-          {
-            data.map(item => {
-              return (
-                <CardLine
-                  onClick={() => this.routeTo(item.id)}
-                  title={item.title}
-                  describe={item.describe}
-                />
-              )
-            })
-          }
-        </View>
+        {
+          !_.isEmpty(data) ? (
+            <View className='columns-list'>
+              {
+                data.map(item => {
+                  return (
+                    <CardLine
+                      onClick={() => this.routeTo(item.id)}
+                      title={item.title}
+                      describe={item.describe}
+                    />
+                  )
+                })
+              }
+            </View>
+          ) : !onLoad ? (
+            <NoData />
+          ) : null
+        }
       </View>
     )
   }
