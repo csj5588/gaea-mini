@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Taro from '@tarojs/taro';
 import { View, Text } from '@tarojs/components'
 import Swipper from '@/components/swipper';
 import Pole from '@/components/pole';
@@ -29,6 +30,12 @@ export default class Index extends Component {
     });
   }
 
+  toColumns = (categoryId) => {
+    Taro.navigateTo({
+      url: `/pages/columns/index?categoryId=${categoryId}`
+    })
+  }
+
   render() {
     const { fields, data, banner } = this.state;
     return (
@@ -39,7 +46,7 @@ export default class Index extends Component {
         {
           Object.keys(fields).map(key => {
             return [
-              <Pole title={fields[key]} more />,
+              <Pole title={fields[key]} more onClickMore={() => this.toColumns(key)} />,
               <ArtList sourceData={data[key] || []} />
             ]
           })

@@ -8,6 +8,11 @@ import { AtButton, AtTabBar } from 'taro-ui'
 import "taro-ui/dist/style/components/button.scss" // 按需引入
 import './index.less'
 
+const TabList = [
+  { title: '首页', iconType: 'home' },
+  { title: '分类', iconType: 'mail' },
+]
+
 export default class Index extends Component {
   constructor () {
     super(...arguments)
@@ -34,11 +39,7 @@ export default class Index extends Component {
         {this.pageMuster[current]}
         <AtTabBar
           fixed
-          tabList={[
-            { title: '首页', iconType: 'home' },
-            { title: '类目', iconType: 'mail' },
-            { title: '我的', iconType: 'user' }
-          ]}
+          tabList={TabList}
           onClick={this.handleClick}
           current={current}
         />
