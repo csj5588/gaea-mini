@@ -39,7 +39,7 @@ export default class Index extends Component {
   render() {
     const { fields, data, banner } = this.state;
     return (
-      <View className='index'>
+      <View className='home'>
         <Swipper
           data={banner}
         />
