@@ -5,6 +5,7 @@ import './index.less'
 
 export default class CMPSwipper extends Component {
   routeToCategory = (categoryId) => {
+    if (!categoryId) return;
     Taro.navigateTo({
       url: `/pages/columns/index?categoryId=${categoryId}`
     })
