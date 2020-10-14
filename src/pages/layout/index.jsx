@@ -12,7 +12,7 @@ export default class Index extends Component {
   constructor () {
     super(...arguments)
     this.state = {
-      current: 1
+      current: 0
     }
   }
 
@@ -25,10 +25,6 @@ export default class Index extends Component {
     this.setState({
       current: value
     })
-    // wx.redirectTo({ url: '/pages/category/index' });
-    // Taro.navigateTo({
-    //   url: '/pages/category/index'
-    // })
   }
 
   render () {

@@ -11,6 +11,7 @@ export default class Index extends Component {
   state = {
     fields: {},
     data: {},
+    banner: [],
   }
 
   componentDidMount() {
@@ -19,20 +20,22 @@ export default class Index extends Component {
 
   getData = () => {
     const db = wx.cloud.database();
-    const table = db.collection('snippet')
-    table.doc('snippet').get({
+    const table = db.collection('home')
+    table.doc('home').get({
       success: (res) => {
-        const { fields, data } = res.data;
-        this.setState({ fields, data });
+        const { fields, data, banner } = res.data;
+        this.setState({ fields, data, banner });
       }
     });
   }
 
   render() {
-    const { fields, data } = this.state;
+    const { fields, data, banner } = this.state;
     return (
       <View className='index'>
-        <Swipper />
+        <Swipper
+          data={banner}
+        />
         {
           Object.keys(fields).map(key => {
             return [

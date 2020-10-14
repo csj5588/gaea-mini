@@ -1,9 +1,17 @@
 import React, { Component } from 'react'
+import Taro from '@tarojs/taro'
 import { View, Swiper, SwiperItem, Image } from '@tarojs/components'
 import './index.less'
 
 export default class CMPSwipper extends Component {
+  routeToCategory = (categoryId) => {
+    Taro.navigateTo({
+      url: `/pages/columns/index?categoryId=${categoryId}`
+    })
+  }
+
   render () {
+    const { data } = this.props;
     return (
       <View className="cmp-swipper">
         <Swiper
@@ -14,18 +22,19 @@ export default class CMPSwipper extends Component {
           indicatorDots
           autoplay
         >
-          <SwiperItem>
-            <Image
-              className="swipper-img"
-              src='https://s1.ax1x.com/2020/10/12/0RKcp6.jpg'
-            />
-          </SwiperItem>
-          <SwiperItem>
-            <Image
-              className="swipper-img"
-              src='https://s1.ax1x.com/2020/10/12/0RMphq.jpg'
-            />
-          </SwiperItem>
+          {
+            data.map(item => {
+              return (
+                <SwiperItem>
+                  <Image
+                    onClick={() => this.routeToCategory(item.id)}
+                    className="swipper-img"
+                    src={item.url}
+                  />
+                </SwiperItem>
+              )
+            })
+          }
         </Swiper>
       </View>
     )
