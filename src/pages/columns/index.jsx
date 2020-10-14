@@ -38,8 +38,9 @@ export default class Columns extends Component {
   }
 
   routeTo = (articleId) => {
+    const { categoryId } = this.state;
     Taro.navigateTo({
-      url: `/pages/article/index?articleId=${articleId}`
+      url: `/pages/article/index?articleId=${articleId}&categoryId=${categoryId}`
     })
   }
 

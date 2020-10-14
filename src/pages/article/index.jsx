@@ -20,12 +20,12 @@ export default class Article extends Component {
   }
 
   getArticle = () => {
-    const { articleId } = getCurrentInstance().router.params
+    const { articleId, categoryId } = getCurrentInstance().router.params
     if (!articleId) return;
 
     const db = wx.cloud.database();
     const table = db.collection('article')
-    table.doc('article/css').get({
+    table.doc(`article/${categoryId}`).get({
       success: (res) => {
         const { data = [] } = res.data;
         const _info = data.find(x => x.id === articleId) || {};
