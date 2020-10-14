@@ -3,7 +3,6 @@ import Taro from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import Home from '@/pages/home';
 import Category from '@/pages/category';
-import Article from '@/pages/article';
 import { AtButton, AtTabBar } from 'taro-ui'
 
 import "taro-ui/dist/style/components/button.scss" // 按需引入
@@ -13,14 +12,13 @@ export default class Index extends Component {
   constructor () {
     super(...arguments)
     this.state = {
-      current: 2
+      current: 1
     }
   }
 
   pageMuster = [
     <Home />,
     <Category />,
-    <Article />,
   ]
 
   handleClick = (value) => {
