@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Taro from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import utils from '@/utils';
 import _isEmpty from 'lodash/isEmpty'
@@ -10,6 +11,8 @@ import './index.less'
 const START = 'start';
 const PLAYING = 'playing';
 
+let score = 0;
+
 export default class Brains extends Component {
   state = {
     picList: [],
@@ -17,8 +20,6 @@ export default class Brains extends Component {
     picGroup: [], // 本屏队列
     gameState: START, // start playing
     topPicUrl: '',
-    endStatus: false,
-    successStatus: false,
   }
 
   componentDidMount() {
@@ -65,7 +66,7 @@ export default class Brains extends Component {
     // goOn?
     if (_isEmpty(picList)) {
       // 挑战成功
-      this.modalShowWithState('successStatus')
+      this.modalShowWithState('success')
       return false;
     }
 
@@ -77,6 +78,8 @@ export default class Brains extends Component {
     // 随机一张 + prePicUrl = picGroup
     const { image: image2 } = this.getOnePic()
     const picGroup = [topPicUrl, image2];
+    // addScore
+    score++
     this.setState({ topPicUrl: image, picGroup, prePicUrl });
   }
 
@@ -84,20 +87,18 @@ export default class Brains extends Component {
     const { prePicUrl } = this.state;
     const isRight = url === prePicUrl;
     
-    isRight ? this.nextRround() : this.modalShowWithState('endStatus')
+    isRight ? this.nextRround() : this.modalShowWithState('fail')
   }
 
-  modalShowWithState = state => {
-    this.setState({ [state]: true }, () => {
-      setTimeout(() => {
-        this.setState({
-          endStatus: false,
-          picGroup: [], // 本屏队列
-          gameState: START, // start playing
-          [state]: false,
-        });
-        this.getPicList();
-      }, 2000)
+  modalShowWithState = type => {
+    this.setState({
+      picGroup: [], // 本屏队列
+      gameState: START, // start playing
+      topPicUrl: '',
+    })
+    this.getPicList();
+    Taro.redirectTo({
+      url: `/pages/result/index?type=${type}&score=${score}`
     })
   }
 
@@ -112,7 +113,7 @@ export default class Brains extends Component {
   }
 
   render () {
-    const { gameState, topPicUrl, picGroup, endStatus, successStatus } = this.state;
+    const { gameState, topPicUrl, picGroup } = this.state;
 
     const isStart = gameState === START;
     const isPlaying = gameState === PLAYING;
@@ -148,16 +149,6 @@ export default class Brains extends Component {
             </View>
           ) : null
         }
-        <AtToast
-          isOpened={endStatus}
-          text="失败了，您的分数为10"
-          image="https://img.ikstatic.cn/MTYwMjc3NTMzMTU3MSM3MTQjcG5n.png"
-        />
-        <AtToast
-          isOpened={successStatus}
-          text="挑战成功，你的记忆里太棒了！"
-          image="https://img.ikstatic.cn/MTYwMjc3NTg2MTk3MiM0MjIjcG5n.png"
-        />
       </View>
     )
   }

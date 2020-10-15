@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
-import Taro from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
+import { View } from '@tarojs/components'
 import Home from '@/pages/home';
 import Category from '@/pages/category';
-import Brains from '@/pages/brains';
-import { AtButton, AtTabBar } from 'taro-ui'
+import { AtTabBar } from 'taro-ui'
 
 import "taro-ui/dist/style/components/button.scss" // 按需引入
 import './index.less'
@@ -12,21 +10,19 @@ import './index.less'
 const TabList = [
   { title: '首页', iconType: 'home' },
   { title: '分类', iconType: 'mail' },
-  { title: 'Brains', iconType: 'mail' },
 ]
 
 export default class Index extends Component {
   constructor () {
     super(...arguments)
     this.state = {
-      current: 2
+      current: 0,
     }
   }
 
   pageMuster = [
     <Home />,
     <Category />,
-    <Brains />,
   ]
 
   handleClick = (value) => {

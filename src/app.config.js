@@ -3,6 +3,8 @@ export default {
     'pages/layout/index',
     'pages/columns/index',
     'pages/article/index',
+    'pages/result/index',
+    'pages/brains/index',
   ],
   window: {
     backgroundTextStyle: 'light',
