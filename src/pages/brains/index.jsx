@@ -76,11 +76,15 @@ export default class Brains extends Component {
     // 更换头图
     const { image = '' } = this.getOnePic()
     // 随机一张 + prePicUrl = picGroup
-    const { image: image2 } = this.getOnePic()
-    const picGroup = [topPicUrl, image2];
+    const { image: image2 } = this.getOnePic();
+    const { image: image3 } = this.getOnePic();
+    const { image: image4 } = this.getOnePic();
+
+    const picGroup = [topPicUrl, image2, image3, image4];
+    const _picGroup = utils.shuffle(picGroup)
     // addScore
     score++
-    this.setState({ topPicUrl: image, picGroup, prePicUrl });
+    this.setState({ topPicUrl: image, picGroup: _picGroup, prePicUrl });
   }
 
   canNextRound = url => {

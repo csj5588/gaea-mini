@@ -6,9 +6,16 @@ import './index.less'
 export default class CMPSwipper extends Component {
   routeToCategory = (categoryId) => {
     if (!categoryId) return;
-    Taro.navigateTo({
-      url: `/pages/columns/index?categoryId=${categoryId}`
-    })
+    const isRoute = categoryId.includes('/pages');
+    if (isRoute) {
+      Taro.navigateTo({
+        url: '/pages/brains/index'
+      })
+    } else {
+      Taro.navigateTo({
+        url: `/pages/columns/index?categoryId=${categoryId}`
+      }) 
+    }
   }
 
   render () {

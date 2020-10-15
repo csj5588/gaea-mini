@@ -37,7 +37,7 @@ export default class Result extends Component {
         <View className="restart-button">
           <AtButton
             type='primary'
-            onClick={this.gameStateToPlaying}
+            onClick={this.routeTo}
           >
             再次挑战
           </AtButton>
