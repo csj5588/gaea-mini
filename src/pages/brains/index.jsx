@@ -11,6 +11,8 @@ import './index.less'
 const START = 'start';
 const PLAYING = 'playing';
 const DEFAULT_COUNT = 3;
+const LEVEL_1 = 1;
+const LEVEL_2 = 2;
 
 let score = 0;
 let downCountTimer;
@@ -23,6 +25,7 @@ export default class Brains extends Component {
     gameState: START, // start playing
     topPicUrl: '',
     downCount: DEFAULT_COUNT,
+    level: LEVEL_2,
   }
 
   componentDidMount() {
