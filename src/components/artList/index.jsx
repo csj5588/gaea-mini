@@ -16,13 +16,11 @@ export default class ArtList extends Component {
     const {
       sourceData = [],
     } = this.props;
-    // save top three
-    const _sourceData = sourceData.splice(0, 3);
     return (
       <View className="art-list">
         <AtList>
           {
-            _sourceData.map(item => {
+            sourceData.map(item => {
               return (
                 <AtListItem
                   onClick={() => this.handleClick(item.id)}
