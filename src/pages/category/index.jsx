@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import { AtButton } from 'taro-ui'
+import Pole from '@/components/pole';
 import MenuCard from '@/components/menuCard';
 
 import "taro-ui/dist/style/components/button.scss" // 按需引入
@@ -36,16 +36,27 @@ export default class Category extends Component {
   render () {
     const { data } = this.state;
     return (
-      <View className='category'>
+      <View className="category">
         {
           data.map(item => {
-            return (
-              <View className='card' onClick={() => this.routeTo(item.id)}>
-                <MenuCard
-                  title={item.title}
-                />
+            const subChilds = item.childs || [];
+            return [
+              <Pole title={item.title} />,
+              <View className='card-box'>
+                {
+                  subChilds.map(subItem => {
+                    return (
+                      <View className='card' onClick={() => this.routeTo(subItem.id)}>
+                        <MenuCard
+                          iconSrc={subItem.iconSrc}
+                          title={subItem.title}
+                        />
+                      </View>
+                    )
+                  })
+                }
               </View>
-            )
+            ]
           })
         }
       </View>
