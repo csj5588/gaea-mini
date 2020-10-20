@@ -10,8 +10,10 @@ import './index.less'
 
 const START = 'start';
 const PLAYING = 'playing';
+const DEFAULT_COUNT = 3;
 
 let score = 0;
+let downCountTimer;
 
 export default class Brains extends Component {
   state = {
@@ -20,6 +22,7 @@ export default class Brains extends Component {
     picGroup: [], // 本屏队列
     gameState: START, // start playing
     topPicUrl: '',
+    downCount: DEFAULT_COUNT,
   }
 
   componentDidMount() {
@@ -84,7 +87,33 @@ export default class Brains extends Component {
     const _picGroup = utils.shuffle(picGroup)
     // addScore
     score++
+    // handle downCount
+
+    this.handleDownCount();
+
     this.setState({ topPicUrl: image, picGroup: _picGroup, prePicUrl });
+  }
+
+  handleDownCount = () => {
+    // inital
+    clearInterval(downCountTimer)
+    this.setState({ downCount: DEFAULT_COUNT })
+
+    const intervalDownCount = () => {
+      downCountTimer = setInterval(() => {
+        const { downCount } = this.state;
+        if (downCount < 1) {
+          // GameOver
+          clearInterval(downCountTimer)
+          this.modalShowWithState('fail');
+          return false;
+        }
+        const nextDownCount = downCount - 1;
+        this.setState({ downCount: nextDownCount })
+      }, 1000)
+    }
+
+    intervalDownCount();
   }
 
   canNextRound = url => {
@@ -117,15 +146,16 @@ export default class Brains extends Component {
   }
 
   render () {
-    const { gameState, topPicUrl, picGroup } = this.state;
+    const { gameState, topPicUrl, picGroup, downCount } = this.state;
 
     const isStart = gameState === START;
     const isPlaying = gameState === PLAYING;
+    const bannerText = `记住下方图片${isPlaying ? `(倒计时：${downCount})` : ''}`
 
     return (
       <View className='brains'>
         <View className="banner">
-          <Text className="text">记住下方图片</Text>
+          <Text className="text">{bannerText}</Text>
           {this.getImage(topPicUrl)}
         </View>
         {
