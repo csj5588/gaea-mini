@@ -15,6 +15,7 @@ const GROUP_NUM = 4;
 const ADD_LEVEL_SCORE = 4;
 const LEVEL_1 = 1;
 const LEVEL_2 = 2;
+const LEVEL_3 = 3;
 
 let score = 0;
 let downCountTimer;
@@ -93,7 +94,7 @@ export default class Brains extends Component {
     // handle downCount
     this.handleDownCount();
 
-    const _level = ADD_LEVEL_SCORE > score ? LEVEL_1 : LEVEL_2
+    const _level = ADD_LEVEL_SCORE > score ? LEVEL_1 : ADD_LEVEL_SCORE * 2 > score ? LEVEL_2 : LEVEL_3
 
     this.setState({
       checkList: [],
@@ -146,6 +147,7 @@ export default class Brains extends Component {
       gameState: START, // start playing
       topPicUrl: [],
     })
+    score = 0;
     this.getPicList();
     Taro.redirectTo({
       url: `/pages/result/index?type=${type}&score=${score}`
@@ -154,11 +156,13 @@ export default class Brains extends Component {
 
   getImage = (url) => {
     return (
-      <Image
-        onClick={() => this.canNextRound(url)}
-        className="image"
-        src={url}
-      />
+      <View className="group-image-box">
+        <Image
+          onClick={() => this.canNextRound(url)}
+          className="image"
+          src={url}
+        />
+      </View>
     )
   }
 
