@@ -16,10 +16,7 @@ export default class Index extends Component {
   }
 
   componentDidMount() {
-    // this.getData()
-    Taro.navigateTo({
-      url: `/pages/brains/index`
-    })
+    this.getData()
   }
 
   getData = () => {
