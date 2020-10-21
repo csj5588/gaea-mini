@@ -195,7 +195,7 @@ export default class Brains extends Component {
           ) : isPlaying ? (
             <View className="playing">
               <View className="flex-center">
-                <Text className="text">请选择前一张图片</Text>
+                <Text className="text">请选择前${level}张图片</Text>
               </View>
               <View className="pic-group">
                 {
