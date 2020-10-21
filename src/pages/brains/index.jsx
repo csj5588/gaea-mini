@@ -181,12 +181,18 @@ export default class Brains extends Component {
 
     const isStart = gameState === START;
     const isPlaying = gameState === PLAYING;
-    const bannerText = `记住下方图片${isPlaying ? `(倒计时：${downCount})` : ''}`
 
     return (
       <View className='brains'>
         <View className="banner">
-          <Text className="text">{bannerText}</Text>
+          <Text className="text">
+            记住下方图片
+            {
+              isPlaying ? (
+                <Text className="down-count">(倒计时：{downCount})</Text>
+              ) : ''
+            }
+          </Text>
           <View className={`top-pic-${level}`}>
             {topPicUrl.map(item => this.getImage(item.image))}
           </View>
