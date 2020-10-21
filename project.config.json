@@ -2,10 +2,10 @@
   "miniprogramRoot": "dist/",
   "projectname": "gaea-mini",
   "description": "前端笔记本",
-  "appid": "touristappid",
+  "appid": "wxfb1e6257a9487749",
   "setting": {
     "urlCheck": true,
-    "es6": true,
+    "es6": false,
     "enhance": false,
     "postcss": false,
     "preloadBackgroundData": false,
