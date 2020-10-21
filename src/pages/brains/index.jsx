@@ -11,6 +11,8 @@ import './index.less'
 const START = 'start';
 const PLAYING = 'playing';
 const DEFAULT_COUNT = 3;
+const GROUP_NUM = 4;
+const ADD_LEVEL_SCORE = 4;
 const LEVEL_1 = 1;
 const LEVEL_2 = 2;
 
@@ -20,12 +22,13 @@ let downCountTimer;
 export default class Brains extends Component {
   state = {
     picList: [],
+    checkList: [], // 选中列表
     copyList: [],
     picGroup: [], // 本屏队列
     gameState: START, // start playing
-    topPicUrl: '',
+    topPicUrl: [],
     downCount: DEFAULT_COUNT,
-    level: LEVEL_2,
+    level: LEVEL_1,
   }
 
   componentDidMount() {
@@ -46,9 +49,9 @@ export default class Brains extends Component {
   }
 
   init = () => {
-    const { image = '' } = this.getOnePic()
+    const { level } = this.state;
     // 随机选取一张照片。
-    this.setState({ topPicUrl: image });
+    this.setState({ topPicUrl: this.getMorePic(level) });
   }
 
   getOnePic = () => {
@@ -60,6 +63,8 @@ export default class Brains extends Component {
     return target
   }
 
+  getMorePic = (n) => new Array(+n).fill('').map(this.getOnePic);
+
   gameStateToPlaying = () => {
     this.setState({ gameState: PLAYING });
     // 下一轮方法
@@ -67,7 +72,7 @@ export default class Brains extends Component {
   }
 
   nextRround = () => {
-    const { topPicUrl, picList } = this.state;
+    const { topPicUrl, picList, level } = this.state;
 
     // goOn?
     if (_isEmpty(picList)) {
@@ -76,25 +81,27 @@ export default class Brains extends Component {
       return false;
     }
 
-    const prePicUrl = topPicUrl;
+    const prePicUrl = [...topPicUrl];
     // cancel picGroup
     this.setState({ picGroup: [] })
     // 更换头图
-    const { image = '' } = this.getOnePic()
     // 随机一张 + prePicUrl = picGroup
-    const { image: image2 } = this.getOnePic();
-    const { image: image3 } = this.getOnePic();
-    const { image: image4 } = this.getOnePic();
-
-    const picGroup = [topPicUrl, image2, image3, image4];
+    const picGroup = [...topPicUrl, ...this.getMorePic(GROUP_NUM - level)];
     const _picGroup = utils.shuffle(picGroup)
     // addScore
     score++
     // handle downCount
-
     this.handleDownCount();
 
-    this.setState({ topPicUrl: image, picGroup: _picGroup, prePicUrl });
+    const _level = ADD_LEVEL_SCORE > score ? LEVEL_1 : LEVEL_2
+
+    this.setState({
+      checkList: [],
+      prePicUrl,
+      topPicUrl: this.getMorePic(_level),
+      picGroup: _picGroup,
+      level: _level,
+    });
   }
 
   handleDownCount = () => {
@@ -120,17 +127,24 @@ export default class Brains extends Component {
   }
 
   canNextRound = url => {
-    const { prePicUrl } = this.state;
-    const isRight = url === prePicUrl;
+    const { prePicUrl, checkList } = this.state;
+
+    const _checkList = [...checkList];
+
+    const isHaven = checkList.includes(x => x === url);
+    const isRight = !isHaven && prePicUrl.some(x => x.image === url);
+    isRight ? _checkList.push(url) : this.modalShowWithState('fail')
+
+    const isSameLength = _checkList.length === prePicUrl.length;
     
-    isRight ? this.nextRround() : this.modalShowWithState('fail')
+    isSameLength ? this.nextRround() : this.setState({ checkList: _checkList })
   }
 
   modalShowWithState = type => {
     this.setState({
       picGroup: [], // 本屏队列
       gameState: START, // start playing
-      topPicUrl: '',
+      topPicUrl: [],
     })
     this.getPicList();
     Taro.redirectTo({
@@ -149,7 +163,7 @@ export default class Brains extends Component {
   }
 
   render () {
-    const { gameState, topPicUrl, picGroup, downCount } = this.state;
+    const { gameState, topPicUrl, picGroup, downCount, level } = this.state;
 
     const isStart = gameState === START;
     const isPlaying = gameState === PLAYING;
@@ -159,7 +173,9 @@ export default class Brains extends Component {
       <View className='brains'>
         <View className="banner">
           <Text className="text">{bannerText}</Text>
-          {this.getImage(topPicUrl)}
+          <View className={`top-pic-${level}`}>
+            {topPicUrl.map(item => this.getImage(item.image))}
+          </View>
         </View>
         {
           isStart ? (
@@ -178,9 +194,7 @@ export default class Brains extends Component {
               </View>
               <View className="pic-group">
                 {
-                  picGroup.map(url => {
-                    return this.getImage(url)
-                  })
+                  picGroup.map(item => this.getImage(item.image))
                 }
               </View>
             </View>
