@@ -10,6 +10,7 @@ import './index.less'
 
 const START = 'start';
 const PLAYING = 'playing';
+const IMAGE_CHECK_ICON = 'https://s1.ax1x.com/2020/10/21/BC5f0S.png';
 const DEFAULT_COUNT = 3;
 const GROUP_NUM = 4;
 const ADD_LEVEL_SCORE = 4;
@@ -155,7 +156,10 @@ export default class Brains extends Component {
     })
   }
 
-  getImage = (url) => {
+  getImage = (url, options = {}) => {
+    const { checkList } = this.state;
+    const { icon } = options;
+    const isCurrentCheck = checkList.includes(url);
     return (
       <View className="group-image-box">
         <Image
@@ -163,6 +167,11 @@ export default class Brains extends Component {
           className="image"
           src={url}
         />
+        {
+          icon && isCurrentCheck ? (
+            <Image className="check-icon" src={IMAGE_CHECK_ICON} />
+          ) : null
+        }
       </View>
     )
   }
@@ -199,7 +208,7 @@ export default class Brains extends Component {
               </View>
               <View className="pic-group">
                 {
-                  picGroup.map(item => this.getImage(item.image))
+                  picGroup.map(item => this.getImage(item.image, { icon: true }))
                 }
               </View>
             </View>
