@@ -147,6 +147,7 @@ export default class Brains extends Component {
       gameState: START, // start playing
       topPicUrl: [],
     })
+    clearInterval(downCountTimer)
     score = 0;
     this.getPicList();
     Taro.redirectTo({
