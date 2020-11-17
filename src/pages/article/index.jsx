@@ -33,11 +33,19 @@ export default class Article extends Component {
     });
   }
 
+  //预览图片，放大预览
+  preview(url) {
+    wx.previewImage({
+      current: url, // 当前显示图片的http链接
+      urls: [url] // 需要预览的图片http链接列表
+    })
+  }
+
   contrast = {
     h2: (val) => (<View className='at-article__h2'>{val}</View>),
     h3: (val) => (<View className='at-article__h3'>{val}</View>),
     p: (val) => (<View className='at-article__p'>{val}</View>),
-    image: (val) => (<Image className='at-article__img' src={val} mode='widthFix' />),
+    image: (val) => (<Image onClick={() => this.preview(val)} className='at-article__img' src={val} mode='widthFix' />),
   }
 
   getView = line => {
